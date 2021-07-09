@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - '*'
+      
 jobs:
   linux:
 
@@ -20,7 +21,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install intltool fsharp gtk-sharp2
-# Check and print installed versions of mono, msbuild, etc
         mono -V
         msbuild -version
         dotnet --info
