@@ -9,10 +9,6 @@ on:
   pull_request:
     branches:
       - '*'
-      
-# Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 jobs:
   linux:
 
@@ -24,6 +20,10 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install intltool fsharp gtk-sharp2
+# Check and print installed versions of mono, msbuild, etc
+        mono -V
+        msbuild -version
+        dotnet --info
     - name: Configure and build
       run: |
         ./configure --profile=gnome
