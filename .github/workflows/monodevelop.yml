@@ -9,6 +9,8 @@ on:
   pull_request:
     branches:
       - '*'
+  # Manually triggered
+  workflow_dispatch:
 
 jobs:
   linux:
@@ -19,7 +21,21 @@ jobs:
     - uses: actions/checkout@v2
     - name: Dependencies
       run: |
-        sudo apt install intltool fsharp gtk-sharp2
+        # Install additional basic packages 
+        sudo apt install intltool
+        # Install mono packages from www.mono-project.com/download/stable (includes mono-msbuild and mono-roslyn)
+        sudo apt install gnupg ca-certificates  
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF  
+        echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list  
+        sudo apt update  
+        sudo apt install mono-complete
+        # Install mono-dependent packages
+        sudo apt install fsharp gtk-sharp2
+        # Note: dotnet dependencies are included in the github ubuntu-20.04 environment
+        # Print out installed mono, msbuild and dotnet versions 
+        mono -V
+        msbuild -version
+        dotnet --info
     - name: Configure and build
       run: |
         ./configure --profile=gnome
