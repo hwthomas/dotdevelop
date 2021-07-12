@@ -29,6 +29,7 @@ jobs:
         echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list  
         sudo apt update  
         sudo apt install mono-complete
+        sudo apt install ca-certificates-mono
         # Install mono-dependent packages
         sudo apt install fsharp gtk-sharp2
         # Note: dotnet dependencies are included in the github ubuntu-20.04 environment
