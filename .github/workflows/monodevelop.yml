@@ -11,19 +11,22 @@ on:
       - '*'
 
 jobs:
-# Copied from lextm to check initial workflow
   ubuntu2004:  
     runs-on: ubuntu-latest
     container:
-      image: "ubuntu:21.04"
+    # This is the cached docker image dated 17/06/2021
+      image: "ubuntu:20.04"
     steps:
     - name: Dependencies
       run: |
+        # Check docker info
+        docker info
+        # Install extra ubuntu packages
         apt-get update
         apt-get install -y sudo        
         sudo apt-get update
         sudo apt-get install -y wget
-        wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+        wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
         sudo dpkg -i packages-microsoft-prod.deb
         sudo apt-get install -y apt-transport-https
         sudo apt-get update
@@ -34,9 +37,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y sed build-essential intltool fsharp gtk-sharp2
         sudo apt-get install -y software-properties-common
-        sudo add-apt-repository ppa:git-core/ppa -y
         sudo apt-get update
-        sudo apt-get install -y git
       shell: bash
     - uses: actions/checkout@v2
       with:
@@ -50,5 +51,7 @@ jobs:
     - name: Configure and build
       run: |
         ./configure --profile=gnome
-        make
+# Don't take build any further yet        
+#        make
       shell: bash
+
