@@ -37,20 +37,22 @@ jobs:
         sudo apt-get install -y software-properties-common
         sudo apt-get update
       shell: bash
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: Verify toolchain versions
+# Don't checkout repo yet - check packages above first
+#    - uses: actions/checkout@v2
+#      with:
+#        submodules: true
+    - name: Verify OS and toolchain versions
       run: |
         uname -a
         git --version
         make --version
+        mono -V
         msbuild -version
       shell: bash
     - name: Configure and build
       run: |
-        ./configure --profile=gnome
 # Don't take build any further yet        
+#        ./configure --profile=gnome
 #        make
       shell: bash
 
