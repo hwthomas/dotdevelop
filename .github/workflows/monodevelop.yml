@@ -19,8 +19,6 @@ jobs:
     steps:
     - name: Dependencies
       run: |
-        # Check docker info
-        docker info
         # Install extra ubuntu packages
         apt-get update
         apt-get install -y sudo        
@@ -44,6 +42,7 @@ jobs:
         submodules: true
     - name: Verify toolchain versions
       run: |
+        uname -a
         git --version
         make --version
         msbuild -version
