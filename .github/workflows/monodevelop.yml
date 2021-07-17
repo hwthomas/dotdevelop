@@ -48,7 +48,6 @@ jobs:
         uname -a
         git --version
         make --version
-        cmake --version
         mono -V
         msbuild -version
         dotnet --info
