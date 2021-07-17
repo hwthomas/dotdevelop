@@ -39,6 +39,7 @@ jobs:
         sudo apt-get install -y sed build-essential intltool fsharp gtk-sharp2
         sudo apt-get install -y software-properties-common
         sudo apt-get update
+        echo $SHELL
       shell: bash
 # Don't checkout repo yet - check packages above first
 #    - uses: actions/checkout@v2
@@ -51,6 +52,7 @@ jobs:
         mono -V
         msbuild -version
         dotnet --info
+        echo $SHELL
       shell: bash
     - name: Configure and build
       run: |
