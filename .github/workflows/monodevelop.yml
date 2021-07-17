@@ -14,7 +14,7 @@ jobs:
   ubuntu2004:  
     runs-on: ubuntu-latest
     container:
-    # This is the cached docker image dated 17/06/2021
+    # This is the cached docker image SHA256:aba80b77...40417fe dated 17/06/2021
       image: "ubuntu:20.04"
     steps:
     - name: Dependencies
@@ -46,7 +46,9 @@ jobs:
     - name: Verify OS and toolchain versions
       run: |
         uname -a
+        git --version
         make --version
+        cmake --version
         mono -V
         msbuild -version
         dotnet --info
@@ -54,7 +56,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    # Now checkout repo - packages tested OK above
+    # Now checkout and build dotdevelop repo (all packages tested OK above)
     - name: Configure and build
       run: |
         ./configure --profile=gnome
