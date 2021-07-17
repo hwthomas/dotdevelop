@@ -39,7 +39,7 @@ jobs:
         # echo "deb https://download.mono-project.com/repo/ubuntu preview-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-preview.list
         sudo apt-get update
         # Install extra packages required for dotdevelop build
-        sudo apt-get install -y sed build-essential intltool fsharp gtk-sharp2
+        sudo apt-get install -y sed git build-essential intltool fsharp gtk-sharp2
         sudo apt-get install -y software-properties-common
         sudo apt-get update
       shell: bash
