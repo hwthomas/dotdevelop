@@ -42,7 +42,7 @@ jobs:
         sudo apt-get install -y sed git build-essential intltool fsharp gtk-sharp2
         sudo apt-get install -y software-properties-common
         sudo apt-get update
-    - name: Verify OS and toolchain versions
+    - name: Verify OS and tools versions
       run: |
         uname -a
         git --version
@@ -50,11 +50,11 @@ jobs:
         mono -V
         msbuild -version
         dotnet --info
+    # Checkout, configure and build
     - uses: actions/checkout@v2
       with:
         submodules: true
-    # Now checkout and build dotdevelop repo (all packages tested OK above)
-    - name: Configure and build
+    - name: Checkout configure and build
       run: |
         ./configure --profile=gnome
         make
