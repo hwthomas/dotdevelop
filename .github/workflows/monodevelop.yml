@@ -50,12 +50,12 @@ jobs:
         mono -V
         msbuild -version
         dotnet --info
-
     # Checkout repo
     - name: Checkout dotdevelop repo
     - uses: actions/checkout@v2
       with:
         submodules: true
+        shell: bash
     # Configure and build dotdevelop
     - name: Configure and build
       run: |
