@@ -11,34 +11,49 @@ on:
       - '*'
 
 jobs:
-  linux:
-
-    runs-on: ubuntu-20.04
-
+  ubuntu2004:  
+    runs-on: ubuntu-latest
+    container:
+    # This is the cached docker image SHA256:aba80b77...40417fe dated 17/06/2021
+      image: "ubuntu:20.04"
     steps:
-    - uses: actions/checkout@v2
     - name: Dependencies
       run: |
+        # Install extra ubuntu packages
+        apt-get update
+        apt-get install -y sudo        
         sudo apt-get update
-        sudo apt-get install -y build-essential
-        sudo apt-get install -y autotools-dev autoconf automake cmake intltool
-        sudo apt-get install -y gnupg ca-certificates
-        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-        echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-        sudo apt-get update
-        sudo apt-get install -y mono-complete
-        sudo apt-get install -y fsharp gtk-sharp2 libglade2.0-cil-dev
+        # Install dotnet-sdk packages
+        sudo apt-get install -y wget
         wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
         sudo dpkg -i packages-microsoft-prod.deb
-        rm packages-microsoft-prod.deb
-        sudo apt-get update
         sudo apt-get install -y apt-transport-https
         sudo apt-get update
-        sudo apt-get install -y dotnet-sdk-5.0
         sudo apt-get install -y dotnet-sdk-3.1
+        # Install mono and msbuild
+        sudo apt-get install -y gnupg ca-certificates
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+        # Install mono and msbuild from stable repo for versions 6.12.0.122 (mono) and 16.6.0.15201 (msbuild)
+        echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+        # Install mono and msbuild from preview repo for versions 6.12.0.147 (mono) and 16.10.1 (msbuild)
+        # echo "deb https://download.mono-project.com/repo/ubuntu preview-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-preview.list
+        sudo apt-get update
+        # Install extra packages required for dotdevelop build
+        sudo apt-get install -y sed git build-essential intltool fsharp gtk-sharp2
+        sudo apt-get install -y software-properties-common
+        sudo apt-get update
+    - name: Verify OS and toolchain versions
+      run: |
+        uname -a
+        git --version
+        make --version
         mono -V
         msbuild -version
         dotnet --info
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    # Now checkout and build dotdevelop repo (all packages tested OK above)
     - name: Configure and build
       run: |
         ./configure --profile=gnome
