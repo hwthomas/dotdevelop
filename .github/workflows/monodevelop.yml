@@ -50,14 +50,11 @@ jobs:
         mono -V
         msbuild -version
         dotnet --info
-    # Checkout repo
-    - name: Checkout dotdevelop repo
+    # Checkout, configure and build
     - uses: actions/checkout@v2
       with:
         submodules: true
-        shell: bash
-    # Configure and build dotdevelop
-    - name: Configure and build
+    - name: Checkout configure and build
       run: |
         ./configure --profile=gnome
         make
